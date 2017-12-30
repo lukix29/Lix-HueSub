@@ -90,7 +90,7 @@ namespace LixHueSub
 
         private async void button4_Click(object sender, EventArgs e)
         {
-           await InitailizeHueConection(txtB_ip.Text);
+            await InitailizeHueConection(txtB_ip.Text);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -448,6 +448,18 @@ namespace LixHueSub
              {
                  this.Invoke(new Action(() => { txtB_tipeeToken.Enabled = btn_conectTipee.Enabled = false; }));
              });
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var config = SharpHue.Configuration.GetBridgeConfiguration();
+            foreach (var user in config.Whitelist)
+            {
+                if (SharpHue.Configuration.DeleteUser(user.Key))
+                {
+
+                }
+            }
         }
     }
 }

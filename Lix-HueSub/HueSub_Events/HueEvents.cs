@@ -20,7 +20,12 @@ namespace LixHueSub
         Bits = 7,
         allsubs = 8
     }
-
+    public enum TimerType
+    {
+        None,
+        On_Off,
+        Color_Switch
+    }
     public interface IHueEvent
     {
         bool Equals(EventType eventType);
@@ -55,7 +60,9 @@ If Minimum and Maximum are 0, Amount is ignored.")]
 Duration:   The duration in milliseconds of the status. (250-10000ms)
 LightKeys:  Keys, witch Light(s) to toggle.
 Brightness: The Brightness of the Lamp. (0-255)
-Timer:      Intervall of Timer, Zero to Disable.    (Switches between Color and Off)")]
+TimerType:  Timer Type. (None == Off)
+Timer:      Intervall of the Timer.
+Color2:     Second Color of the Lamp if Timer is used.")]
         public List<HueEventStatus> States { get; set; } = new List<HueEventStatus>();
 
         public bool Check(IHueEvent message)
@@ -98,6 +105,9 @@ Timer:      Intervall of Timer, Zero to Disable.    (Switches between Color and 
         [JsonRequired, DescriptionAttribute("The Color of the Lamp.")]
         public Color Color { get; set; } = Color.Gainsboro;
 
+        [JsonRequired, DescriptionAttribute("The Second Color of the Lamp. (only in use with Timer)")]
+        public Color Color2 { get; set; } = Color.Gainsboro;
+
         [JsonRequired, DescriptionAttribute("Transition Time.")]
         public ushort Transition { get; set; } = 1;
 
@@ -105,13 +115,15 @@ Timer:      Intervall of Timer, Zero to Disable.    (Switches between Color and 
         public bool TurnOn { get; set; } = true;
 
         [JsonRequired, DescriptionAttribute("Timer Intervall, Zero to Disable Timer.")]
-        public uint Timer { get => tim; set => tim = LXMath.Constrain(value, 100, 10_000); }
+        public uint TimerInterval { get => tim; set => tim = LXMath.Constrain(value, 100, 10_000); }
+        [JsonRequired]
+        public TimerType TimerType { get; set; } = TimerType.None;
 
         [JsonRequired, DescriptionAttribute("Duration of the \"Color\".")]
         public uint Duration
         {
             get => dur;
-            set => dur = LXMath.Constrain(value, 250, 60_000);
+            set => dur = LXMath.Constrain(value, 200, 60_000);
         }
 
         [JsonIgnore, DefaultValueAttribute(1)]

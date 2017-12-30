@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Quobject.SocketIoClientDotNet.Client;
+using WebSocketSharp.Net.WebSockets;
 
 namespace LixHueSub.Tipeee
 {
     public class TipeeEventHandler
     {
-        private Socket socket;
+        //private Socket socket;
         public void Dispose()
         {
-            socket?.Disconnect();
+            //socket?.Dispose();
         }
         public void NewEventReceived(object o)
         {
@@ -35,18 +35,28 @@ namespace LixHueSub.Tipeee
 
                     var room = access_token;
                     var obj = new { room = access_token, username = username };
-                    socket = IO.Socket("https://sso.tipeeestream.com:4242");
-                    socket.On("connect", () =>
-                    {
-                        socket.Emit("join-room", obj);
 
-                        socket.On("join-room", () =>
-                             {
-                                 socket.On("new-event", (data) => NewEventReceived(data));
-                                 action?.Invoke();
-                             });
-                    });
-                    socket.Connect();
+                    using (var ws = new WebSocketSharp.WebSocket("https://sso.tipeeestream.com:4242"))
+                    {
+                        ws.OnMessage += (sender, e) =>
+                          Console.WriteLine("New message from controller: " + e.Data);
+
+                        ws.Connect();
+                        Console.ReadKey(true);
+                    }
+
+                    //socket = IO.Socket("https://sso.tipeeestream.com:4242");
+                    //socket.On("connect", () =>
+                    //{
+                    //    socket.Emit("join-room", obj);
+
+                    //    socket.On("join-room", () =>
+                    //         {
+                    //             socket.On("new-event", (data) => NewEventReceived(data));
+                    //             action?.Invoke();
+                    //         });
+                    //});
+                    //socket.Connect();
 
                     //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     //socket.Connect("sso.tipeeestream.com", 4242);

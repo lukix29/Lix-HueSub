@@ -59,6 +59,7 @@
             this.btn_SaveEvents = new System.Windows.Forms.Button();
             this.btn_CreateEvent = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -252,6 +253,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.label6);
             this.splitContainer1.Panel1.Controls.Add(this.button3);
             this.splitContainer1.Panel1.Controls.Add(this.btn_ConectHue);
@@ -468,6 +470,20 @@
             this.panel3.Size = new System.Drawing.Size(301, 208);
             this.panel3.TabIndex = 18;
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.AutoSize = true;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(-4, 79);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(127, 25);
+            this.button2.TabIndex = 24;
+            this.button2.Text = "Remove App from Hue";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -537,6 +553,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtB_tipeeToken;
         private System.Windows.Forms.Button btn_conectTipee;
+        private System.Windows.Forms.Button button2;
     }
 }
 

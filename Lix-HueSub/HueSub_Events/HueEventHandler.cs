@@ -62,7 +62,7 @@ namespace LixHueSub
                     Lights = new LightCollection();
                     return null;
                 }
-                catch(Exception x)
+                catch (Exception x)
                 {
                     return x;
                 }
@@ -93,74 +93,82 @@ namespace LixHueSub
 
                 foreach (var stat in @event.States)
                 {
-                    try
+                    if (stat.TimerType == TimerType.None)
                     {
-                        if (stat.Timer == 0)
+                        var newstate = new LightStateBuilder()
+                            .Brightness(stat.Brightness)
+                            .Color(stat.Color)
+                            .TransitionTime(stat.Transition)
+                            .Turn(stat.TurnOn)
+                            .For(Lights[stat.LightKey]);
+
+                        newstate.Apply();
+
+                        //OnEventFired?.Invoke(stat);
+
+                        if (stat.Duration > 0)
                         {
-                            var newstate = new LightStateBuilder()
-                                .Brightness(stat.Brightness)
-                                .Color(stat.Color)
-                                .TransitionTime(stat.Transition)
-                                .Turn(stat.TurnOn)
-                                .For(Lights[stat.LightKey]);
-
-                            newstate.Apply();
-
-                            //OnEventFired?.Invoke(stat);
-
-                            if (stat.Duration > 0)
-                            {
-                                System.Threading.Thread.Sleep((int)stat.Duration);
-                            }
-                        }
-                        else
-                        {
-                            var watch = new System.Diagnostics.Stopwatch();
-                            bool switchOn = !Lights[stat.LightKey].State.IsOn;
-                            for (int i = 0; i < UInt16.MaxValue; i++)
-                            {
-                                try
-                                {
-                                    //throw new Exception();
-                                    if (watch.ElapsedMilliseconds > stat.Duration) break;
-                                    
-                                    new LightStateBuilder()
-                                        .Turn(switchOn)
-                                        .For(Lights[stat.LightKey])
-                                        .Apply();
-
-                                    if (switchOn)
-                                    {
-                                        new LightStateBuilder()
-                                            .TransitionTime(stat.Transition)
-                                            .For(Lights[stat.LightKey])
-                                            .Apply();
-
-                                        new LightStateBuilder()
-                                        .Brightness(stat.Brightness)
-                                        .Color(stat.Color)
-                                        .For(Lights[stat.LightKey])
-                                        .Apply();
-                                    }
-
-                                    switchOn = !switchOn;
-
-                                    System.Threading.Thread.Sleep((int)stat.Timer);
-                                }
-                                finally
-                                {
-                                    if (!watch.IsRunning) watch.Start();
-                                }
-                            }
+                            System.Threading.Thread.Sleep((int)stat.Duration);
                         }
                     }
-                    catch { }
+                    else
+                    {
+                        var watch = new System.Diagnostics.Stopwatch();
+                        bool switchOn = !Lights[stat.LightKey].State.IsOn;
+
+                        if (stat.TimerType == TimerType.Color_Switch)
+                        {
+                            new LightStateBuilder()
+                                    .Turn(true)
+                                    .For(Lights[stat.LightKey])
+                                    .Apply();
+                        }
+
+                        new LightStateBuilder()
+                            .TransitionTime(stat.Transition)
+                            .For(Lights[stat.LightKey])
+                            .Apply();
+
+                        for (int i = 0; i < UInt16.MaxValue; i++)
+                        {
+                            if (watch.ElapsedMilliseconds > stat.Duration) break;
+
+                            if (stat.TimerType == TimerType.On_Off)
+                            {
+                                new LightStateBuilder()
+                                .Turn(switchOn)
+                                .For(Lights[stat.LightKey])
+                                .Apply();
+                            }
+
+                            if (switchOn)
+                            {
+                                new LightStateBuilder()
+                                .Brightness(stat.Brightness)
+                                .Color(stat.Color)
+                                .For(Lights[stat.LightKey])
+                                .Apply();
+                            }
+                            else if (stat.TimerType == TimerType.Color_Switch)
+                            {
+                                new LightStateBuilder()
+                                .Brightness(stat.Brightness)
+                                .Color(stat.Color2)
+                                .For(Lights[stat.LightKey])
+                                .Apply();
+                            }
+
+                            switchOn = !switchOn;
+
+                            System.Threading.Thread.Sleep((int)stat.TimerInterval);
+
+                            if (!watch.IsRunning) watch.Start();
+                        }
+                    }
                 }
 
                 foreach (var light in oldLightStates)
                 {
-                    try
-                    {
                         new LightStateBuilder()
                             .Turn(light.on)
                             .For(Lights[light.key])
@@ -170,11 +178,9 @@ namespace LixHueSub
                             .HSBColor(light.col)
                             .For(Lights[light.key])
                             .Apply();
-                    }
-                    catch { }
                 }
             }
-            catch (AggregateException ae)
+            catch (Exception ae)
             {
                 ae.Handle("", true);
             }
