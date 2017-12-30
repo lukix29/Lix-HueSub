@@ -42,6 +42,7 @@
             this.listBox_Events = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtB_ip = new System.Windows.Forms.TextBox();
             this.btn_conectTipee = new System.Windows.Forms.Button();
@@ -59,7 +60,6 @@
             this.btn_SaveEvents = new System.Windows.Forms.Button();
             this.btn_CreateEvent = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -269,6 +269,20 @@
             this.splitContainer1.SplitterDistance = 124;
             this.splitContainer1.TabIndex = 26;
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.AutoSize = true;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(-4, 79);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(127, 25);
+            this.button2.TabIndex = 24;
+            this.button2.Text = "Remove App from Hue";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -304,6 +318,7 @@
             this.btn_conectTipee.TabIndex = 26;
             this.btn_conectTipee.Text = "Connect Tipeee";
             this.btn_conectTipee.UseVisualStyleBackColor = true;
+            this.btn_conectTipee.Visible = false;
             this.btn_conectTipee.Click += new System.EventHandler(this.btn_conectTipee_Click);
             // 
             // label7
@@ -316,6 +331,7 @@
             this.label7.Size = new System.Drawing.Size(118, 16);
             this.label7.TabIndex = 25;
             this.label7.Text = "Tipeee APi Token";
+            this.label7.Visible = false;
             // 
             // txtB_tipeeToken
             // 
@@ -328,6 +344,7 @@
             this.txtB_tipeeToken.Name = "txtB_tipeeToken";
             this.txtB_tipeeToken.Size = new System.Drawing.Size(149, 22);
             this.txtB_tipeeToken.TabIndex = 24;
+            this.txtB_tipeeToken.Visible = false;
             // 
             // button1
             // 
@@ -469,20 +486,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(301, 208);
             this.panel3.TabIndex = 18;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.AutoSize = true;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(-4, 79);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(127, 25);
-            this.button2.TabIndex = 24;
-            this.button2.Text = "Remove App from Hue";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 

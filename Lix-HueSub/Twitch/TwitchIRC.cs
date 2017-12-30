@@ -182,7 +182,9 @@ namespace LixHueSub
                     Connect(Channel);
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private void Irc_RawMessageRecieved(object sender, IRC_Client.Events.RawMessageEventArgs e)

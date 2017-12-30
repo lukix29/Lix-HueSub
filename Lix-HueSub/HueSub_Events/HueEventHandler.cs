@@ -88,6 +88,8 @@ namespace LixHueSub
                 {
                     on = t.State.IsOn,
                     col = t.State.HSBColor,
+                    xy = t.State.ColorSpaceCoordinates,
+                    mode = t.State.CurrentColorMode,
                     key = t.ID
                 }).ToList();
 
@@ -169,15 +171,25 @@ namespace LixHueSub
 
                 foreach (var light in oldLightStates)
                 {
+                    new LightStateBuilder()
+                        .Turn(light.on)
+                        .For(Lights[light.key])
+                        .Apply();
+
+                    if (light.mode.Equals("xy", StringComparison.OrdinalIgnoreCase))
+                    {
                         new LightStateBuilder()
-                            .Turn(light.on)
+                            .XYCoordinates(light.xy)
                             .For(Lights[light.key])
                             .Apply();
-
+                    }
+                    else
+                    {
                         new LightStateBuilder()
                             .HSBColor(light.col)
                             .For(Lights[light.key])
                             .Apply();
+                    }
                 }
             }
             catch (Exception ae)
